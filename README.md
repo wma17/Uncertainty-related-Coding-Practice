@@ -1,102 +1,95 @@
-# Predictive Uncertainty Estimation using Deep Ensemble
+# Uncertainty Quantification via Deep Ensemble and MC-Dropout
 
-## Introduction
+This repository contains my personal practice code for studying Bayesian deep learning, with a focus on uncertainty quantification. I referenced the paper [*Simple and Scalable Predictive Uncertainty Estimation using Deep Ensembles*](https://arxiv.org/abs/1612.01474) and its accompanying [code and dataset](https://github.com/Kyushik/Predictive-Uncertainty-Estimation-using-Deep-Ensemble). While the original implementation was in TensorFlow, I have re-implemented the methods in **PyTorch**.
 
-This repository is for implementation of the paper [Simple and Scalable Predictive Uncertainty Estimation using Deep Ensembles](https://arxiv.org/abs/1612.01474). This algorithm quantifies predictive predictive uncertainty in non-Bayesian NN with `Deep Ensemble Model`.  
+## Main Python Scripts
 
+| Python File Name           | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `DEnsembleClass.py`        | Trains a single model and a Deep Ensemble on the MNIST dataset |
+| `DE-unc-basd-ood.py`       | Performs uncertainty evaluation on OOD tests, comparing single models and ensembles |
+| `DE-single-picture.py`     | Tests and compares single models and ensembles on randomly chosen images (in the `./pic/` folder) |
+| `MCDrop-Class.py`          | Trains a single MC-Dropout model on the MNIST dataset        |
+| `MCDrop-unc-basd-ood.py`   | Performs uncertainty evaluation on OOD tests with MC-Dropout models |
+| `MCDrop-single-picture.py` | Tests and compares MC-Dropout models on the same chosen images (in the `./pic/` folder) |
 
+**Note.**
+Since the MNIST dataset consists of black digits on a white background, while Omniglot has white digits on a black background, we inverted the colors of the Omniglot dataset to improve the reliability of the OOD tests.
 
-**Contribution** of this paper is that it describes `simple` and `scalable` method for `estimating predictive uncertainty estimates` from NN.
+## Results
 
+Several result plots are available in the `/DeepEnsemble Result/` and `/MCDropout Result/` directories.
 
-
-This paper uses 3 things for training
-
-- Proper Scoring Rules
-- Adversarial Training to smooth predictive distributions
-- Deep Ensembles
-
-This repository implemented without Adversarial training
-
-The versions of deep learning libraries for this repo are as follows
-- tensorflow: 2.9.1
-- pytorch: 1.9.1
-
-Implementation and Results are as follows.
-
+**Notes on Performance.**
+For better results, especially with the MC-Dropout model, you might want to use more complex models and train for more epochs. Under the current settings, the MC-Dropout results are not as strong as expected.
 
 
-## Implementation
-### Regression (Toy data)
-This example is result of `regression` with toy data which has simple sine data with noise.
-The data for this example is as follows.
+### Deep Ensemble
 
-<img src="./image/ToyData.png" width="300" alt="toy dataset" />
+1. OOD Test and Evaluations
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, Omniglot): 0.9878, AUPR: 0.9898
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, Omniglot): 0.9881, AUPR: 0.9897
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, Omniglot): 0.9825, AUPR: 0.9825
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, EMNIST): 0.9631, AUPR: 0.9806
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, EMNIST): 0.9619, AUPR: 0.9791
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, EMNIST): 0.9598, AUPR: 0.9778
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, KMNIST): 0.9891, AUPR: 0.9878
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, KMNIST): 0.9859, AUPR: 0.9824
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9876, AUPR: 0.9859
 
-**Result of regression (toy data)** is as follows. 
+2. Single Image Test with randomly chosen pictures
 
-<img src="./image/ToyResult.png" width="300" alt="Regression Toy Result1" />
+Single Model predictions:
+1th sample (G.png) with Single Model: label = 3, probability = 0.9983
+2th sample (E.png) with Single Model: label = 8, probability = 0.5474
+3th sample (J.png) with Single Model: label = 1, probability = 0.9992
+4th sample (D.png) with Single Model: label = 0, probability = 0.9977
+5th sample (1F.png) with Single Model: label = 4, probability = 0.6319
+6th sample (6I.png) with Single Model: label = 1, probability = 0.9997
+7th sample (2H.png) with Single Model: label = 7, probability = 0.4463
+8th sample (C.png) with Single Model: label = 1, probability = 0.9913
+9th sample (3B.png) with Single Model: label = 8, probability = 0.9616
+10th sample (A.png) with Single Model: label = 4, probability = 0.7672
 
-The standard deviation is predicted appropriately according to the noise of the data. 
-Also, the standard deviation increases for the out-of-distribution data. 
-
-<img src="./image/ToyResult_Ensemble_Single.png" width="300" alt="Regression Toy Result1" />
-
-The toy data is used for evaluating result for the performance between single network and ensemble network. 
-As the above graph shows, the estimation of uncertainty is poor when using a single network. 
-
-### Regression (Real data)
-
-This example is result of `regression` with [Concrete dataset](https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength). The data which is used for this example is as follows.
-
-<img src="./image/Concrete_dataset.PNG" width="600" alt="Concrete Dataset" />
-
-It has 1030 data and it has 9 component. The `information of the components` are as follows. 
-
-|             Name              |  Data Type   |    Measurement     |   Description   |
-| :---------------------------: | :----------: | :----------------: | :-------------: |
-|            Cement             | Quantitative | kg in a m3 mixture | Input Variable  |
-|         Blast Furnace         | Quantitative | kg in a m3 mixture | Input Variable  |
-|            Fly Ash            | Quantitative | kg in a m3 mixture | Input Variable  |
-|             Water             | Quantitative | kg in a m3 mixture | Input Variable  |
-|       Superplasticizer        | Quantitative | kg in a m3 mixture | Input Variable  |
-|       Course Aggregate        | Quantitative | kg in a m3 mixture | Input Variable  |
-|        Fine Aggregate         | Quantitative | kg in a m3 mixture | Input Variable  |
-|              Age              | Quantitative |    Day (1~365)     | Input Variable  |
-| Concrete Compressive Strength | Quantitative |        MPa         | Output Variable |
+Ensemble Model predictions:
+1th sample (G.png) with Ensemble Model: label = 3, probability = 0.5188
+2th sample (E.png) with Ensemble Model: label = 8, probability = 0.7905
+3th sample (J.png) with Ensemble Model: label = 1, probability = 0.9974
+4th sample (D.png) with Ensemble Model: label = 0, probability = 0.5697
+5th sample (1F.png) with Ensemble Model: label = 4, probability = 0.8692
+6th sample (6I.png) with Ensemble Model: label = 1, probability = 0.9995
+7th sample (2H.png) with Ensemble Model: label = 4, probability = 0.3324
+8th sample (C.png) with Ensemble Model: label = 1, probability = 0.6432
+9th sample (3B.png) with Ensemble Model: label = 4, probability = 0.5934
+10th sample (A.png) with Ensemble Model: label = 4, probability = 0.9511
 
 
 
-**Result of regression (real data)** is as follows. 
-
-<img src="./image/result_real1.png" width="500" alt="Regression Result1" />
-
-Result predicts ground truth quite well. Also, if there is difference between prediction and ground truth,  ground truth exists between the uncertainty of the prediction.
-
-<img src="./image/result_real2.png" width="500" alt="Regression Result2" />
-
-Also, I used random numbers as `unknown input` of this algorithm and compare this unknown data with known data. As you can see, standard deviation of known data is much smaller than standard deviation of unknown data.  This result shows that this algorithm is not overconfident when unknown dataset is used!:smile:
-
----
-
-## Classification (MNIST)
-
-This example is result of `classification` with famous and popular [MNIST dataset](http://yann.lecun.com/exdb/mnist/). Also, this paper used [NotMNIST Dataset](http://yaroslavvb.blogspot.kr/2011/09/notmnist-dataset.html) as unknown data. The data which is used for this example is as follows.
 
 
+### MC Drop-out
+1. OOD Test
 
-![Classification_data](./image/Classification_data.png)
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, Omniglot): 0.9602, AUPR: 0.9686
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, Omniglot): 0.9632, AUPR: 0.9718
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, Omniglot): 0.9465, AUPR: 0.9432
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, EMNIST): 0.9283, AUPR: 0.9613
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, EMNIST): 0.9275, AUPR: 0.9600
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, EMNIST): 0.9242, AUPR: 0.9576
+Uncertainty-based OOD Detection AUROC (Total Uncertainty, KMNIST): 0.9562, AUPR: 0.9551
+Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, KMNIST): 0.9548, AUPR: 0.9526
+Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9511, AUPR: 0.9452
 
+2. Single Image Test with randomly chosen pictures
 
-
-**Result of classification** is as follows. 
-
-![Classification_result_MNIST](./image/Classification_result_MNIST.PNG)
-
-This is the `result of known data` (MNIST dataset). In this case, both ensemble and single network show good result. However, ensemble shows better performance in most case. 
-
-
-
-![Classification_result_NotMNIST](./image/Classification_result_NotMNIST.PNG)
-
-This is the `result of unknown data` (NotMNIST dataset). In this case, there is big difference between ensemble network and single network. `Single network` is overconfident, even though the class of data is unknown!! However,  `Ensemble` result has lower confidence when the class is unknown!! This result shows that using ensemble for estimating predictive uncertainty is better for solving overconfident prediction problem than single network!! :clap:
+MC-Dropout Model predictions:
+1th sample (G.png) with MC-Dropout Model: label = 5, probability = 0.3144
+2th sample (E.png) with MC-Dropout Model: label = 8, probability = 0.6371
+3th sample (J.png) with MC-Dropout Model: label = 1, probability = 0.9831
+4th sample (D.png) with MC-Dropout Model: label = 4, probability = 0.5639
+5th sample (1F.png) with MC-Dropout Model: label = 4, probability = 0.9991
+6th sample (6I.png) with MC-Dropout Model: label = 1, probability = 0.8647
+7th sample (2H.png) with MC-Dropout Model: label = 4, probability = 0.9640
+8th sample (C.png) with MC-Dropout Model: label = 1, probability = 0.4944
+9th sample (3B.png) with MC-Dropout Model: label = 4, probability = 0.9990
+10th sample (A.png) with MC-Dropout Model: label = 4, probability = 0.9999
