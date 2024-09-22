@@ -26,7 +26,7 @@ For better results, especially with the MC-Dropout model, you might want to use 
 
 ### Deep Ensemble
 
-1. OOD Test and Evaluations
+1. OOD Test and Evaluations<br>
 Uncertainty-based OOD Detection AUROC (Total Uncertainty, Omniglot): 0.9878, AUPR: 0.9898<br>
 Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, Omniglot): 0.9881, AUPR: 0.9897<br>
 Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, Omniglot): 0.9825, AUPR: 0.9825<br>
