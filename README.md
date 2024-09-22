@@ -26,7 +26,8 @@ For better results, especially with the MC-Dropout model, you might want to use 
 
 ### Deep Ensemble
 
-1. OOD Test and Evaluations<br>
+1. OOD Test and Evaluations
+
 Uncertainty-based OOD Detection AUROC (Total Uncertainty, Omniglot): 0.9878, AUPR: 0.9898<br>
 Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, Omniglot): 0.9881, AUPR: 0.9897<br>
 Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, Omniglot): 0.9825, AUPR: 0.9825<br>
@@ -37,9 +38,11 @@ Uncertainty-based OOD Detection AUROC (Total Uncertainty, KMNIST): 0.9891, AUPR:
 Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, KMNIST): 0.9859, AUPR: 0.9824<br>
 Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9876, AUPR: 0.9859<br>
 <br>
+
 2. Single Image Test with randomly chosen pictures
 
 Single Model predictions:<br>
+
 1th sample (G.png) with Single Model: label = 3, probability = 0.9983<br>
 2th sample (E.png) with Single Model: label = 8, probability = 0.5474<br>
 3th sample (J.png) with Single Model: label = 1, probability = 0.9992<br>
@@ -53,6 +56,7 @@ Single Model predictions:<br>
 <br>
 
 Ensemble Model predictions:<br>
+
 1th sample (G.png) with Ensemble Model: label = 3, probability = 0.5188<br>
 2th sample (E.png) with Ensemble Model: label = 8, probability = 0.7905<br>
 3th sample (J.png) with Ensemble Model: label = 1, probability = 0.9974<br>
@@ -69,6 +73,7 @@ Ensemble Model predictions:<br>
 
 
 ### MC Drop-out
+
 1. OOD Test
 
 Uncertainty-based OOD Detection AUROC (Total Uncertainty, Omniglot): 0.9602, AUPR: 0.9686<br>
@@ -81,9 +86,11 @@ Uncertainty-based OOD Detection AUROC (Total Uncertainty, KMNIST): 0.9562, AUPR:
 Uncertainty-based OOD Detection AUROC (Aleatoric Uncertainty, KMNIST): 0.9548, AUPR: 0.9526<br>
 Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9511, AUPR: 0.9452<br>
 <br>
+
 2. Single Image Test with randomly chosen pictures
 
 MC-Dropout Model predictions:<br>
+
 1th sample (G.png) with MC-Dropout Model: label = 5, probability = 0.3144<br>
 2th sample (E.png) with MC-Dropout Model: label = 8, probability = 0.6371<br>
 3th sample (J.png) with MC-Dropout Model: label = 1, probability = 0.9831<br>
