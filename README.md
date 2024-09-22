@@ -39,7 +39,7 @@ Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9876, A
 <br>
 2. Single Image Test with randomly chosen pictures
 
-Single Model predictions:
+Single Model predictions:<br>
 1th sample (G.png) with Single Model: label = 3, probability = 0.9983<br>
 2th sample (E.png) with Single Model: label = 8, probability = 0.5474<br>
 3th sample (J.png) with Single Model: label = 1, probability = 0.9992<br>
@@ -51,7 +51,8 @@ Single Model predictions:
 9th sample (3B.png) with Single Model: label = 8, probability = 0.9616<br>
 10th sample (A.png) with Single Model: label = 4, probability = 0.7672<br>
 <br>
-Ensemble Model predictions:
+
+Ensemble Model predictions:<br>
 1th sample (G.png) with Ensemble Model: label = 3, probability = 0.5188<br>
 2th sample (E.png) with Ensemble Model: label = 8, probability = 0.7905<br>
 3th sample (J.png) with Ensemble Model: label = 1, probability = 0.9974<br>
@@ -82,7 +83,7 @@ Uncertainty-based OOD Detection AUROC (Epistemic Uncertainty, KMNIST): 0.9511, A
 <br>
 2. Single Image Test with randomly chosen pictures
 
-MC-Dropout Model predictions:
+MC-Dropout Model predictions:<br>
 1th sample (G.png) with MC-Dropout Model: label = 5, probability = 0.3144<br>
 2th sample (E.png) with MC-Dropout Model: label = 8, probability = 0.6371<br>
 3th sample (J.png) with MC-Dropout Model: label = 1, probability = 0.9831<br>
